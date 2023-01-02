@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, finalize, from, of, switchMap, tap } from 'rxjs';
+import { catchError, from, of, switchMap, tap } from 'rxjs';
 import { IPicture } from 'src/app/shared/interfaces/picture.interface';
 import { PicturesService } from 'src/app/shared/services/pictures.service';
 import { setLoaded } from '../actions/load.action';
@@ -29,7 +29,6 @@ export class PictureEffects {
           ]);
         }),
         catchError((error: unknown) => of(pictureActions.getPicturesFailer({ error }))),
-        finalize(() => this.store.dispatch(setLoaded({ loaded: true })))
       ))
     )
   );
@@ -38,6 +37,5 @@ export class PictureEffects {
     private actions$: Actions,
     private pictureService: PicturesService,
     private readonly store: Store<IAppState>
-
   ) { }
 }
